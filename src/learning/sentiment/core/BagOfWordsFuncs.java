@@ -29,6 +29,11 @@ public class BagOfWordsFuncs {
         // TODO: Find the weighted average of Maps a and b. Multiply the value for each key in a with aWeight,
         //  then multiply the corresponding value from b by (1 - aWeight), and add them.
         //  Since N extends Number, you can use the Number.doubleValue() method to get a concrete value.
+        for (int i = 0; i < a.size(); i++) {
+            for (int j = 0; j < b.size(); j++) {
+
+            }
+        }
         return null;
     }
 

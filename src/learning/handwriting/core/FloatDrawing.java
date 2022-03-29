@@ -34,7 +34,14 @@ public class FloatDrawing {
     //  d1weight * d1 pixel value + (1.0 - d1weight) * d2 pixel value
     public static FloatDrawing weightedAverageOf(FloatDrawing d1, FloatDrawing d2, double d1weight) {
         // Your code here
-        return null;
+        // nested for loop of pixel array
+        FloatDrawing average = new FloatDrawing(d1.getWidth(), d1.getHeight());
+        for (int x = 0; x < d1.getWidth(); x++) {
+            for (int y = 0; y < d1.getHeight(); y++) {
+                average.set(x, y, d1weight * d1.get(x, y) + (1.0 - d1weight) * d2.get(x, y));
+            }
+        }
+        return average;
     }
 
     public int getWidth() {
@@ -48,7 +55,15 @@ public class FloatDrawing {
     // TODO: Calculate the pixel-by-pixel Euclidean distance between these two
     //  FloatDrawing objects.
     public double euclideanDistance(FloatDrawing other) {
-        return 0.0;
+        double sum = 0.0;
+        int count = 0;
+        for (int x = 0; x < getWidth(); x++) {
+            for (int y = 0; y < getHeight(); y++) {
+                sum += Math.abs(other.get(x, y) - get(x, y));
+                count += 1;
+            }
+        }
+        return sum / count;
     }
 
     @Override
