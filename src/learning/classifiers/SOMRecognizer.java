@@ -47,7 +47,10 @@ public class SOMRecognizer<V, L> implements Classifier<V, L> {
     //  best matches the current node.
     public static <V,L> L findLabelFor(V currentNode, int k, ArrayList<Duple<V, L>> allSamples, ToDoubleBiFunction<V, V> distance) {
         // Your code here
-        return null;
+        // new knn object
+        Knn<V, L> retriever = new Knn<V, L>(k, distance); // I think I'm almost right here... but maybe not. access duple?
+        retriever.train(allSamples);
+        return retriever.classify(currentNode);
     }
 
     @Override

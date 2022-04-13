@@ -26,6 +26,8 @@ public class SelfOrgMap<V> {
     //  smallest distance compared to example.
     public SOMPoint bestFor(V example) {
 		// Your code here.
+        // nested loop to explore "map", find distance between map and example
+        // return som point (pair of ints) that says "this is best"
         return null;
     }
 
@@ -39,6 +41,7 @@ public class SelfOrgMap<V> {
     //        the effective learning rate.
     public void train(V example) {
         // Your code here
+        // calls best_for, does steps
     }
 
     // TODO: Find the distance between the locations of sp1 and sp2 in the
@@ -48,6 +51,7 @@ public class SelfOrgMap<V> {
     //  is not any smaller than zero.
     public double computeDistanceWeight(SOMPoint sp1, SOMPoint sp2) {
 		// Your code here
+        // euclidian distance
         return 0.0;
     }
 

@@ -29,9 +29,32 @@ public class BagOfWordsFuncs {
         // TODO: Find the weighted average of Maps a and b. Multiply the value for each key in a with aWeight,
         //  then multiply the corresponding value from b by (1 - aWeight), and add them.
         //  Since N extends Number, you can use the Number.doubleValue() method to get a concrete value.
-        for (int i = 0; i < a.size(); i++) {
-            for (int j = 0; j < b.size(); j++) {
-
+        HashMap<K, Double> average = new HashMap<>();
+        // ignore this first loop
+//        for (int i = 0; i < a.keySet().size(); i++) { // Shouldn't be a.size()... something with K or N? loop over a keys, look up value in b, if not present, val = 0. Loop through b, same thing. // a times aweight, b times 1 - aweight
+//
+//        }
+        for (K key : a.keySet()) {
+            if (b.containsKey(key)) {
+                // Do I add both a and b values (with appropriate mult. w/ aweight?)
+                // take count from a, mult by aweight, count from b and 1 - aweight, ADD THEM.
+                double newa;
+                double newb;
+                newa = a.get(key).doubleValue() * aWeight;
+                newb = b.get(key).doubleValue() * (1 - aWeight);
+                average.put(key, (newa + newb));
+            }
+            else {
+                // mult a count by aweight (bc zero from b)
+                double newa = a.get(key).doubleValue() * aWeight;
+                average.put(key, newa);
+            }
+        }
+        for (K key : b.keySet()) {
+            if (!a.containsKey(key)) {
+                //take care of leftovers from b
+                double newb = b.get(key).doubleValue() * (1 - aWeight);
+                average.put(key, newb);
             }
         }
         return null;
