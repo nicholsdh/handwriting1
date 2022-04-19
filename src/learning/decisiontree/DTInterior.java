@@ -30,7 +30,11 @@ public class DTInterior<V, L, F, FV extends Comparable<FV>> implements DecisionT
 		// TODO: If the targeted decisionFeature is less than or equal to the maxFeatureValue, ask the left subtree.
 		//       Otherwise, ask the right subtree.
 		//       DTTest.testInterior() should pass when this works.
-		return null;
+		if (maxFeatureValue.compareTo(getFeatureValue.apply(v, decisionFeature)) >= 0) {
+			return left.classify(v);
+		} else {
+			return right.classify(v);
+		}
 	}
 
 	@Override

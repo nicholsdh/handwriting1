@@ -35,7 +35,15 @@ public class DTTrainer<V,L, F, FV extends Comparable<FV>> {
 	public static <V,L, F, FV  extends Comparable<FV>> ArrayList<Duple<F,FV>>
 	reducedFeatures(ArrayList<Duple<V,L>> data, Function<ArrayList<Duple<V, L>>, ArrayList<Duple<F,FV>>> allFeatures,
 					int targetNumber) {
-		return null;
+		ArrayList<Duple<F, FV>> featlist = allFeatures.apply(data);
+		Collections.shuffle(featlist);
+		ArrayList<Duple<F, FV>> newfeatlist = new ArrayList<>();
+		for (Duple<F, FV> feature : featlist) {
+			if (feature.getFirst() == targetNumber) { // Here's where I'm leaving off for the time being.
+				newfeatlist.add(feature);
+			}
+		}
+		return featlist;
     }
 	
 	public DecisionTree<V,L,F,FV> train() {
