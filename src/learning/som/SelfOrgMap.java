@@ -28,7 +28,18 @@ public class SelfOrgMap<V> {
 		// Your code here.
         // nested loop to explore "map", find distance between map and example
         // return som point (pair of ints) that says "this is best"
-        return null;
+        double current_best = distance.applyAsDouble(map[0][0], example);
+        SOMPoint to_return = new SOMPoint(0,0);
+        for (int i = 0; i < getMapHeight(); i++) {
+            for (int j = 0; j < getMapWidth(); j++) {
+                double test = distance.applyAsDouble(map[i][j], example);
+                if (test < current_best) {
+                    current_best = test;
+                    to_return = new SOMPoint(i, j); // Am I recording the right thing here???
+                }
+            }
+        }
+        return to_return;
     }
 
     // TODO: Train this SOM with example.
@@ -42,6 +53,17 @@ public class SelfOrgMap<V> {
     public void train(V example) {
         // Your code here
         // calls best_for, does steps
+        SOMPoint best = bestFor(example);
+
+        for (int i = 0; i < getMapWidth(); i++) {
+            for (int j = 0; j < getMapHeight(); j++) {
+                SOMPoint test = new SOMPoint(i, j); // Probably not right?
+                double weight = computeDistanceWeight(best, test);
+                trainingCounts[i][j] += weight;
+                double elr = effectiveLearningRate(weight, trainingCounts[i][j]);
+                map[i][j] = averager.weightedAverage(example, map[i][j], elr);
+            }
+        }
     }
 
     // TODO: Find the distance between the locations of sp1 and sp2 in the
@@ -52,6 +74,12 @@ public class SelfOrgMap<V> {
     public double computeDistanceWeight(SOMPoint sp1, SOMPoint sp2) {
 		// Your code here
         // euclidian distance
+        double length = sp1.distanceTo(sp2);
+        length = length / getMapWidth();
+        length = 1 - length;
+        if (length > 0) {
+            return length;
+        }
         return 0.0;
     }
 
@@ -60,7 +88,11 @@ public class SelfOrgMap<V> {
     //  tiny. Then, multiply it by the distance weight.
     public static double effectiveLearningRate(double distWeight, double trainingCounts) {
 		// Your code here
-        return 0.0;
+        double update_rate = 1/trainingCounts;
+        if (update_rate < 1) { //Check to make sure this part is right...
+            return update_rate * distWeight;
+        }
+        return distWeight;
     }
 
     public V getNode(int x, int y) {
