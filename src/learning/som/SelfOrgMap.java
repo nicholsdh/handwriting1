@@ -28,6 +28,8 @@ public class SelfOrgMap<V> {
 		// Your code here.
         // nested loop to explore "map", find distance between map and example
         // return som point (pair of ints) that says "this is best"
+        assert map[0][0] != null;
+        assert example != null;
         double current_best = distance.applyAsDouble(map[0][0], example);
         SOMPoint to_return = new SOMPoint(0,0);
         for (int i = 0; i < getMapHeight(); i++) {

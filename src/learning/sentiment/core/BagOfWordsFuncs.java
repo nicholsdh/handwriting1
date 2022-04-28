@@ -10,6 +10,8 @@ public class BagOfWordsFuncs {
     }
 
     public static <K, N extends Number> double cosineSimilarity(Map<K,N> a, Map<K, N> b) {
+        assert a != null;
+        assert b != null;
         return dotProduct(a, b) / (magnitude(a) * magnitude(b));
     }
 
@@ -18,6 +20,8 @@ public class BagOfWordsFuncs {
     }
 
     public static <K, N extends Number> double dotProduct(Map<K, N> a, Map<K, N> b) {
+        assert a != null;
+        assert b != null;
         double result = 0.0;
         for (K key: keysFromBoth(a, b)) {
             result += a.get(key).doubleValue() * b.get(key).doubleValue();
@@ -57,7 +61,7 @@ public class BagOfWordsFuncs {
                 average.put(key, newb);
             }
         }
-        return null;
+        return average;
     }
 
     public static <K, N> HashSet<K> allKeysFrom(Map<K,N> a, Map<K, N> b) {
@@ -67,6 +71,9 @@ public class BagOfWordsFuncs {
     }
 
     public static <K, N> HashSet<K> keysFromBoth(Map<K, N> a, Map<K, N> b) {
+        assert a != null;
+        assert b != null;
+        // System.out.println(a);
         HashSet<K> both = new HashSet<>(a.keySet());
         both.retainAll(b.keySet());
         return both;

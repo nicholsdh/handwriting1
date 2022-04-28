@@ -129,6 +129,7 @@ public class SentimentViewer extends JFrame {
                         JOptionPane.showMessageDialog(SentimentViewer.this, "Training complete");
                     } catch (Exception | StackOverflowError exc) {
                         timer.stop();
+                        exc.printStackTrace();
                         progress.setText("Error at:" + progress.getText());
                         JOptionPane.showMessageDialog(SentimentViewer.this, "Exception: " + exc.getMessage());
                     }
