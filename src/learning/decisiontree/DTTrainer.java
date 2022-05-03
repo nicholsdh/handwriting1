@@ -57,6 +57,7 @@ public class DTTrainer<V,L, F, FV extends Comparable<FV>> {
 		// TODO: Implement the decision tree learning algorithm
 		if (numLabels(data) == 1) {
 			// TODO: Return a leaf node consisting of the only label in data
+			// System.out.println("Only label in data: ");
 			return new DTLeaf<>(data.get(0).getSecond());
 		} else {
 			ArrayList<Duple<F, FV>> workinglist = new ArrayList<Duple<F, FV>>();
@@ -95,13 +96,16 @@ public class DTTrainer<V,L, F, FV extends Comparable<FV>> {
 				}
 			} // Create and return interior node?? REMEMBER TO NOT RETURN NULL
 			if (bestdup.getFirst().size() == 0) {
+				System.out.println("Size of first was 0");
 				return new DTLeaf(mostPopularLabelFrom(bestdup.getSecond()));
 			} else if (bestdup.getSecond().size() == 0) {
+				System.out.println("Size of second was 0");
 				return new DTLeaf(mostPopularLabelFrom(bestdup.getFirst()));
 			}
 			DecisionTree<V,L,F,FV> left = train(bestdup.getFirst());
 			DecisionTree<V,L,F,FV> right = train(bestdup.getSecond());
 			DTInterior<V, L, F, FV> interior = new DTInterior<>(bestitem.getFirst(), bestitem.getSecond(), left, right, getFeatureValue, successor);
+			// System.out.println("Returning an interior...");
 			return interior;
 		}		
 	}
@@ -134,17 +138,27 @@ public class DTTrainer<V,L, F, FV extends Comparable<FV>> {
 		//  Gini coefficient is 1 - sum(for all labels i, p_i^2)
 		//  Should pass DTTest.testGini().
 		Histogram<L> labelhist = new Histogram<>();// How do I use histogram?
-		for (Duple<V, L> labelpair : data) // How to access labels?
-			labelpair.getSecond();
+		ArrayList<L> labellist = new ArrayList<>();
+		for (Duple<V, L> labelpair : data) {
+			labelhist.bump(labelpair.getSecond());
+			if (!labellist.contains(labelpair.getSecond())) {
+				labellist.add(labelpair.getSecond());
+			}
+		}
+		double sum = 0;
+		for (L label : labellist) {
+			sum += Math.pow(labelhist.getPortionFor(label), 2);
+		}
 			// Iterate through, data.getsecond?
-		return 1.0;
+		return 1.0 - sum;
 	}
 
 	public static <V,L> double gain(ArrayList<Duple<V,L>> parent, ArrayList<Duple<V,L>> child1,
 									ArrayList<Duple<V,L>> child2) {
 		// TODO: Calculate the gain of the split. Add the gini values for the children.
 		//  Subtract that sum from the gini value for the parent. Should pass DTTest.testGain().
-		return 0; // What is gain
+		double sum = getGini(child1) + getGini(child2);
+		return getGini(parent) - sum;
 	}
 
 	public static <V,L, F, FV  extends Comparable<FV>> Duple<ArrayList<Duple<V,L>>,ArrayList<Duple<V,L>>> splitOn
